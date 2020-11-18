@@ -14,10 +14,12 @@ public class Sac {
 
 	private ArrayList<Groupe> poid;
 	private ArrayList<Groupe> cout;
+	private ArrayList<Integer> choice;
 
 	public Sac() {
 		this.setPoid(new ArrayList<Groupe>());
 		this.setCout(new ArrayList<Groupe>());
+		this.setChoiceToTake(new ArrayList<Integer>());
 		this.setValue(0);
 		this.setCapacity(0);
 		this.setNombreItem(0);
@@ -69,6 +71,21 @@ public class Sac {
 
 	public void setBeastValue(int beastValue) {
 		this.beastValue = beastValue;
+	}
+
+	public ArrayList<Integer> getChoiceToTake() {
+		return choice;
+	}
+
+	public void setChoiceToTake(ArrayList<Integer> choice) {
+		this.choice = choice;
+	}
+
+	public void initTabChoice() {
+		this.choice = new ArrayList<Integer>();
+		for (int i = 0; i < this.cout.size(); i++) {
+			this.choice.add(-1);
+		}
 	}
 
 }
