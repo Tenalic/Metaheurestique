@@ -18,10 +18,11 @@ public class Fonction {
 			Scanner myReader = new Scanner(myObj);
 			int line = 1;
 			int nextLine = 0;
+			int compteur = 0;
+			Groupe groupe = new Groupe();
 
 			while (myReader.hasNextLine()) {
 				String data = myReader.nextLine();
-				// System.out.println(data);
 				if (line == 1) {
 					sac.setNombreItem(Integer.parseInt(data));
 					nextLine = line + 1;
@@ -38,13 +39,32 @@ public class Fonction {
 					}
 					if (tab.length > 1 && (line == 3 || line == 13)) {
 						for (int i = 0; i < tab.length; i++) {
-							sac.getCout().add(Integer.parseInt(tab[i]));
+							if (compteur >= 3) {
+								sac.getCout().add(groupe);
+								groupe = new Groupe();
+							} else {
+								compteur++;
+								groupe.getListDeTrois().add(Integer.parseInt(tab[i]));
+							}
+						}
+						if (!groupe.getListDeTrois().isEmpty()) {
+							sac.getCout().add(groupe);
+							groupe = new Groupe();
 						}
 						nextLine = line + 1;
 					}
 					if (tab.length > 1 && (line == 4 || line == 14)) {
 						for (int i = 0; i < tab.length; i++) {
-							sac.getPoid().add(Integer.parseInt(tab[i]));
+							if (compteur >= 3) {
+								sac.getPoid().add(groupe);
+								groupe = new Groupe();
+							} else {
+								compteur++;
+								groupe.getListDeTrois().add(Integer.parseInt(tab[i]));
+							}
+						}
+						if (!groupe.getListDeTrois().isEmpty()) {
+							sac.getPoid().add(groupe);
 						}
 					}
 				}

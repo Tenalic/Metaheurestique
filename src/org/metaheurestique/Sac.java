@@ -7,17 +7,17 @@ public class Sac {
 	private int capacity;
 
 	private int value;
-	
+
 	private int beastValue;
-	
+
 	private int nombreItem;
 
-	private ArrayList<Integer> poid;
-	private ArrayList<Integer> cout;
+	private ArrayList<Groupe> poid;
+	private ArrayList<Groupe> cout;
 
 	public Sac() {
-		this.setPoid(new ArrayList<Integer>());
-		this.setCout(new ArrayList<Integer>());
+		this.setPoid(new ArrayList<Groupe>());
+		this.setCout(new ArrayList<Groupe>());
 		this.setValue(0);
 		this.setCapacity(0);
 		this.setNombreItem(0);
@@ -47,19 +47,19 @@ public class Sac {
 		this.nombreItem = nombreItem;
 	}
 
-	public ArrayList<Integer> getPoid() {
+	public ArrayList<Groupe> getPoid() {
 		return poid;
 	}
 
-	public void setPoid(ArrayList<Integer> poid) {
+	public void setPoid(ArrayList<Groupe> poid) {
 		this.poid = poid;
 	}
 
-	public ArrayList<Integer> getCout() {
+	public ArrayList<Groupe> getCout() {
 		return cout;
 	}
 
-	public void setCout(ArrayList<Integer> cout) {
+	public void setCout(ArrayList<Groupe> cout) {
 		this.cout = cout;
 	}
 
@@ -70,7 +70,5 @@ public class Sac {
 	public void setBeastValue(int beastValue) {
 		this.beastValue = beastValue;
 	}
-	
-	
 
 }
