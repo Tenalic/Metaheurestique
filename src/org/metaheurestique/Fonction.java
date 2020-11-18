@@ -42,6 +42,7 @@ public class Fonction {
 							if (compteur >= 3) {
 								sac.getCout().add(groupe);
 								groupe = new Groupe();
+								compteur = 0;
 							} else {
 								compteur++;
 								groupe.getListDeTrois().add(Integer.parseInt(tab[i]));
@@ -58,6 +59,7 @@ public class Fonction {
 							if (compteur >= 3) {
 								sac.getPoid().add(groupe);
 								groupe = new Groupe();
+								compteur = 0;
 							} else {
 								compteur++;
 								groupe.getListDeTrois().add(Integer.parseInt(tab[i]));
@@ -78,6 +80,47 @@ public class Fonction {
 		}
 		return sac;
 	}
-	
-	
+
+	public Sac algoGenetique(Sac sac) {
+		Sac sac1 = sac;
+		Sac sac2 = sac;
+		Sac sac3 = sac;
+		Sac sac4 = sac;
+		Sac beastSac = sac;
+		Sac beastSacTemp = sac;
+
+		for (int i = 0; i < 100; i++) {
+			sac1.mutation();
+			sac2.mutation();
+			sac3.mutation();
+			sac4.mutation();
+			beastSacTemp = beastSac(sac1, sac2, sac3, sac4);
+			if (beastSacTemp.getValue() > beastSac.getValue()) {
+				beastSac = beastSacTemp;
+			}
+			sac1 = sac;
+			sac2 = sac;
+			sac3 = sac;
+			sac4 = sac;
+			beastSacTemp = sac;
+		}
+		return beastSac;
+	}
+
+	public Sac beastSac(Sac sac1, Sac sac2, Sac sac3, Sac sac4) {
+		if (sac1.getValue() > sac2.getValue() && sac1.getValue() > sac3.getValue()
+				&& sac1.getValue() > sac4.getValue()) {
+			return sac1;
+		}
+		if (sac2.getValue() > sac3.getValue() && sac2.getValue() > sac4.getValue()
+				&& sac2.getValue() > sac1.getValue()) {
+			return sac2;
+		}
+		if (sac3.getValue() > sac4.getValue() && sac3.getValue() > sac1.getValue()
+				&& sac3.getValue() > sac2.getValue()) {
+			return sac3;
+		}
+		return sac4;
+	}
+
 }

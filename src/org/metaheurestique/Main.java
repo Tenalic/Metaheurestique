@@ -7,7 +7,9 @@ public class Main {
 	public static void main(String[] args) {
 		Sac sac = fonction.charge_donnees("idkp1_1.txt");
 		if (sac != null) {
-			// rien pour le moment
+			sac.initTabChoice();
+			sac = fonction.algoGenetique(sac);
+			System.out.println(sac.getValue());
 		}
 	}
 
