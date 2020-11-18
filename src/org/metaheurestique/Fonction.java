@@ -89,7 +89,7 @@ public class Fonction {
 		Sac beastSac = sac;
 		Sac beastSacTemp = sac;
 
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 50000; i++) {
 			sac1.mutation();
 			sac2.mutation();
 			sac3.mutation();

@@ -112,6 +112,7 @@ public class Sac {
 				break;
 			}
 		}
+		this.value = newValue;
 	}
 
 	public Integer rand(int min, int max) {
