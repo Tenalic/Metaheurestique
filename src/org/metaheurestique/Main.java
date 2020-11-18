@@ -9,7 +9,9 @@ public class Main {
 		if (sac != null) {
 			sac.initTabChoice();
 			sac = fonction.algoGenetique(sac);
-			System.out.println(sac.getValue());
+			System.out.println("value = : " + sac.getValue());
+			System.out.println("capacity = : " + sac.getCapacityActuelle());
+			System.out.println("capacity free = : " + (sac.getCapacity() - sac.getCapacityActuelle()));
 		}
 	}
 
