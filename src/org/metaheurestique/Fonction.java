@@ -133,42 +133,9 @@ public class Fonction {
 		}
 		return sac4;
 	}
-	
-	public Sac algoGeneticTournois(Sac sac)
-	{
-		Sac sac1 = sac;
-		ArrayList<Groupe> cout = sac1.getCout();
-		ArrayList<Groupe> poid = sac1.getPoid();
-		ArrayList<Integer> choix = new ArrayList<Integer>();
-		for(int i = 0; i < cout.size();i++)
-		{
-			choix.add(meilleurDuGroupe(cout.get(i),poid.get(i)));//determiner pour chaque groupe le meilleurs individu
-		}
-		sac1.setChoiceToTake(choix);
-		sac1.calculValue();
-		
-		
-		return sac1;
-	}
-	
-	public int meilleurDuGroupe(Groupe c, Groupe a)
-	{
-		float max = 0;
-		int j = 0;
-		for (int i = 0; i<c.getListDeTrois().size();i++)
-		{
-			int cout = c.getListDeTrois().get(i).intValue();
-			int poid = a.getListDeTrois().get(i).intValue();
-			if(max < cout/poid)
-			{
-				max = cout/poid;
-				j = i;
-			}
-		}
-		return j;
-	}
 
-	public ArrayList<Sac> deuxBeastSacs(Sac sac1, Sac sac2, Sac sac3, Sac sac4, Sac sac5, Sac sac6, Sac sac7, Sac sac8) {
+	public ArrayList<Sac> deuxBeastSacs(Sac sac1, Sac sac2, Sac sac3, Sac sac4, Sac sac5, Sac sac6, Sac sac7,
+			Sac sac8) {
 		ArrayList<Sac> listSac = new ArrayList<Sac>();
 		return listSac;
 	}
@@ -187,5 +154,33 @@ public class Fonction {
 		listSac.add(newSac1);
 		listSac.add(newSac2);
 		return null;
+	}
+
+	public Sac algoGeneticTournois(Sac sac) {
+		Sac sac1 = sac;
+		ArrayList<Groupe> cout = sac1.getCout();
+		ArrayList<Groupe> poid = sac1.getPoid();
+		ArrayList<Integer> choix = new ArrayList<Integer>();
+		for (int i = 0; i < cout.size(); i++) {
+			choix.add(meilleurDuGroupe(cout.get(i), poid.get(i)));// determiner pour chaque groupe le meilleurs individu
+		}
+		sac1.setChoiceToTake(choix);
+		sac1.calculValue();
+
+		return sac1;
+	}
+
+	public int meilleurDuGroupe(Groupe c, Groupe a) {
+		float max = 0;
+		int j = 0;
+		for (int i = 0; i < c.getListDeTrois().size(); i++) {
+			int cout = c.getListDeTrois().get(i).intValue();
+			int poid = a.getListDeTrois().get(i).intValue();
+			if (max < cout / poid) {
+				max = cout / poid;
+				j = i;
+			}
+		}
+		return j;
 	}
 }
