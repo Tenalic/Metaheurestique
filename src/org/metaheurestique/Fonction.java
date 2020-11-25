@@ -2,6 +2,7 @@ package org.metaheurestique;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Fonction {
@@ -121,6 +122,40 @@ public class Fonction {
 			return sac3;
 		}
 		return sac4;
+	}
+	
+	public Sac algoGeneticTournois(Sac sac)
+	{
+		Sac sac1 = sac;
+		ArrayList<Groupe> cout = sac1.getCout();
+		ArrayList<Groupe> poid = sac1.getPoid();
+		ArrayList<Integer> choix = new ArrayList<Integer>();
+		for(int i = 0; i < cout.size();i++)
+		{
+			choix.add(meilleurDuGroupe(cout.get(i),poid.get(i)));//determiner pour chaque groupe le meilleurs individu
+		}
+		sac1.setChoiceToTake(choix);
+		sac1.calculValue();
+		
+		
+		return sac1;
+	}
+	
+	public int meilleurDuGroupe(Groupe c, Groupe a)
+	{
+		float max = 0;
+		int j = 0;
+		for (int i = 0; i<c.getListDeTrois().size();i++)
+		{
+			int cout = c.getListDeTrois().get(i).intValue();
+			int poid = a.getListDeTrois().get(i).intValue();
+			if(max < cout/poid)
+			{
+				max = cout/poid;
+				j = i;
+			}
+		}
+		return j;
 	}
 
 }

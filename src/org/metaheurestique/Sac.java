@@ -12,6 +12,8 @@ public class Sac {
 	private int beastValue;
 
 	private int nombreItem;
+	
+	private int capacityActuel = 0;
 
 	private ArrayList<Groupe> poid;
 	private ArrayList<Groupe> cout;
@@ -30,6 +32,20 @@ public class Sac {
 		this.setCapacity(0);
 		this.setNombreItem(0);
 	}
+
+	
+	
+	public int getCapacityActuel() {
+		return capacityActuel;
+	}
+
+
+
+	public void setCapacityActuel(int capacityActuel) {
+		this.capacityActuel = capacityActuel;
+	}
+
+
 
 	public int getValue() {
 		return value;
@@ -119,6 +135,15 @@ public class Sac {
 		Random rand = new Random();
 		int nombreAleatoire = rand.nextInt(max - min + 1) + min;
 		return nombreAleatoire;
+	}
+	
+	public void calculValue()
+	{
+		for(int i = 0;i<choice.size();i++ )
+		{
+			this.value = this.value + cout.get(i).getListDeTrois().get(choice.get(i));
+			capacityActuel = capacityActuel + poid.get(i).getListDeTrois().get(choice.get(i));
+		}
 	}
 
 }
