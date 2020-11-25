@@ -123,7 +123,7 @@ public class Sac {
 
 	public void mutation() {
 		for (int i = 0; i < this.choice.size(); i++) {
-			this.choice.set(i, rand(-1, 2));
+			this.choice.set(i, rand(-1, poid.get(i).getTaille()-1));
 		}
 		updateValue();
 		updateCapacityActuelle();

@@ -46,10 +46,15 @@ public class Fonction {
 								compteur = 0;
 							} else {
 								compteur++;
-								groupe.getListDeTrois().add(Integer.parseInt(tab[i]));
+								try {
+									groupe.getListDeTrois().add(Integer.parseInt(tab[i]));
+								} catch (NumberFormatException e) {
+									compteur--;
+								}
 							}
 						}
 						if (!groupe.getListDeTrois().isEmpty()) {
+							groupe.setTaille(groupe.getListDeTrois().size());
 							sac.getCout().add(groupe);
 							groupe = new Groupe();
 						}
@@ -63,10 +68,15 @@ public class Fonction {
 								compteur = 0;
 							} else {
 								compteur++;
-								groupe.getListDeTrois().add(Integer.parseInt(tab[i]));
+								try {
+									groupe.getListDeTrois().add(Integer.parseInt(tab[i]));
+								} catch (NumberFormatException e) {
+									compteur--;
+								}
 							}
 						}
 						if (!groupe.getListDeTrois().isEmpty()) {
+							groupe.setTaille(groupe.getListDeTrois().size());
 							sac.getPoid().add(groupe);
 						}
 					}
@@ -158,4 +168,24 @@ public class Fonction {
 		return j;
 	}
 
+	public ArrayList<Sac> deuxBeastSacs(Sac sac1, Sac sac2, Sac sac3, Sac sac4, Sac sac5, Sac sac6, Sac sac7, Sac sac8) {
+		ArrayList<Sac> listSac = new ArrayList<Sac>();
+		return listSac;
+	}
+
+	public ArrayList<Sac> crossover(Sac sac1, Sac sac2) {
+		int taille = sac1.getChoiceToTake().size();
+		Sac newSac1 = sac1;
+		Sac newSac2 = sac2;
+		for (int i = 0; i < taille / 2; i++) {
+			newSac2.getChoiceToTake().set(i, sac2.getChoiceToTake().get(i));
+		}
+		for (int j = taille / 2; j < taille; j++) {
+			newSac1.getChoiceToTake().set(j, sac1.getChoiceToTake().get(j));
+		}
+		ArrayList<Sac> listSac = new ArrayList<Sac>();
+		listSac.add(newSac1);
+		listSac.add(newSac2);
+		return null;
+	}
 }
