@@ -15,6 +15,8 @@ public class Sac {
 	
 	private int capacityActuel = 0;
 
+	private int capacityActuelle;
+
 	private ArrayList<Groupe> poid;
 	private ArrayList<Groupe> cout;
 	/**
@@ -31,6 +33,7 @@ public class Sac {
 		this.setValue(0);
 		this.setCapacity(0);
 		this.setNombreItem(0);
+		this.setCapacityActuelle(0);
 	}
 
 	
@@ -103,6 +106,14 @@ public class Sac {
 		this.choice = choice;
 	}
 
+	public int getCapacityActuelle() {
+		return capacityActuelle;
+	}
+
+	public void setCapacityActuelle(int capacityActuelle) {
+		this.capacityActuelle = capacityActuelle;
+	}
+
 	public void initTabChoice() {
 		this.choice = new ArrayList<Integer>();
 		for (int i = 0; i < this.cout.size(); i++) {
@@ -111,24 +122,47 @@ public class Sac {
 	}
 
 	public void mutation() {
-		for(int i = 0; i < this.choice.size(); i++) {
-			this.choice.set(i, rand(-1,2));
+		for (int i = 0; i < this.choice.size(); i++) {
+			this.choice.set(i, rand(-1, 2));
 		}
+		updateValue();
+		updateCapacityActuelle();
+	}
+
+	public void updateValue() {
 		int newValue = 0;
-		for(int j = 0; j < this.choice.size(); j++) {
-			switch(choice.get(j)) {
-			case 0 :
+		for (int j = 0; j < this.choice.size(); j++) {
+			switch (choice.get(j)) {
+			case 0:
 				newValue = newValue + this.cout.get(j).getListDeTrois().get(0);
 				break;
-			case 1 : 
+			case 1:
 				newValue = newValue + this.cout.get(j).getListDeTrois().get(1);
 				break;
-			case 2 :
+			case 2:
 				newValue = newValue + this.cout.get(j).getListDeTrois().get(2);
 				break;
 			}
 		}
 		this.value = newValue;
+	}
+
+	public void updateCapacityActuelle() {
+		int newCapacityActuelle = 0;
+		for (int j = 0; j < this.choice.size(); j++) {
+			switch (choice.get(j)) {
+			case 0:
+				newCapacityActuelle = newCapacityActuelle + this.poid.get(j).getListDeTrois().get(0);
+				break;
+			case 1:
+				newCapacityActuelle = newCapacityActuelle + this.poid.get(j).getListDeTrois().get(1);
+				break;
+			case 2:
+				newCapacityActuelle = newCapacityActuelle + this.poid.get(j).getListDeTrois().get(2);
+				break;
+			}
+		}
+		this.capacityActuelle = newCapacityActuelle;
 	}
 
 	public Integer rand(int min, int max) {
