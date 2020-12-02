@@ -93,9 +93,9 @@ public class Fonction {
 		return sac;
 	}
 
-	public Sac algoGenetique(Sac sac, int nombreDeSac) {
+	public Sac algoGenetique(Sac sac, int nombreDeSac, int nombreIterationMax) {
 		if (nombreDeSac > 0) {
-			
+
 			Sac sacVide;
 
 			ArrayList<Sac> listeSacs = new ArrayList<Sac>();
@@ -111,31 +111,31 @@ public class Fonction {
 			Sac beastSac = sac;
 			Sac beastSacTemp;
 
-			for (int i = 0; i < 100000; i++) {
+			for (int i = 0; i < nombreIterationMax; i++) {
 
 				for (int j = 0; j < nombreDeSac; j++) {
 					listeSacs.get(j).mutation();
 				}
-				
+
 				listeSacs = suprSollutionNonPossible(listeSacs);
 
 				/**
 				 * tri par valeurs du sac decroissante
 				 */
 				Collections.sort(listeSacs);
-				
+
 				beastSacTemp = newBeastSacTemp(listeSacs);
 
 				if (beastSacTemp != null && isNewMeilleurSac(beastSacTemp, beastSac) == true) {
 					beastSac = beastSacTemp;
 				}
 
-				if(listeSacs.size() >= 2) {
+				if (listeSacs.size() >= 2) {
 					listeEnfants = crossover(listeSacs.get(0), listeSacs.get(1));
 				}
 
 				listeSacs = new ArrayList<Sac>();
-				
+
 				listeSacs.add(beastSac);
 
 				for (int k = 0; k < listeEnfants.size(); k++) {
@@ -151,6 +151,75 @@ public class Fonction {
 					sacVide.initTabChoiceRand();
 					listeSacs.add(sacVide);
 				}
+			}
+			return beastSac;
+		}
+		return sac;
+	}
+
+	public Sac algoGenetique(Sac sac, int nombreDeSac, int nombreIterationMax, boolean utiliserValeursMaxTheorique) {
+		if (nombreDeSac > 0) {
+
+			Sac sacVide;
+
+			ArrayList<Sac> listeSacs = new ArrayList<Sac>();
+			ArrayList<Sac> listeEnfants = new ArrayList<Sac>();
+
+			int compt = 0;
+
+			for (int i = 0; i < nombreDeSac; i++) {
+				listeSacs.add(new Sac(sac));
+				listeSacs.get(i).initTabChoiceRand();
+			}
+
+			Sac beastSac = sac;
+			Sac beastSacTemp;
+
+			int i = 0;
+
+			while (i < nombreIterationMax
+					&& (utiliserValeursMaxTheorique == true && beastSac.getValue() < beastSac.getBeastValue())) {
+
+				for (int j = 0; j < nombreDeSac; j++) {
+					listeSacs.get(j).mutation();
+				}
+
+				listeSacs = suprSollutionNonPossible(listeSacs);
+
+				/**
+				 * tri par valeurs du sac decroissante
+				 */
+				Collections.sort(listeSacs);
+
+				beastSacTemp = newBeastSacTemp(listeSacs);
+
+				if (beastSacTemp != null && isNewMeilleurSac(beastSacTemp, beastSac) == true) {
+					beastSac = beastSacTemp;
+				}
+
+				if (listeSacs.size() >= 2) {
+					listeEnfants = crossover(listeSacs.get(0), listeSacs.get(1));
+				}
+
+				listeSacs = new ArrayList<Sac>();
+
+				listeSacs.add(beastSac);
+
+				for (int k = 0; k < listeEnfants.size(); k++) {
+					if (listeEnfants.get(k).getCapacity() >= listeEnfants.get(k).getCapacityActuelle()) {
+						listeSacs.add(listeEnfants.get(k));
+					}
+				}
+
+				compt = nombreDeSac - listeSacs.size();
+
+				for (int l = 0; l < compt; l++) {
+					sacVide = new Sac(sac);
+					sacVide.initTabChoiceRand();
+					listeSacs.add(sacVide);
+				}
+				
+				i++;
 			}
 			return beastSac;
 		}
@@ -179,11 +248,11 @@ public class Fonction {
 		}
 		return null;
 	}
-	
+
 	public ArrayList<Sac> suprSollutionNonPossible(ArrayList<Sac> listeSac) {
 		ArrayList<Sac> newListeSac = new ArrayList<Sac>();
-		for(Sac sac : listeSac) {
-			if(sac.getCapacityActuelle() <= sac.getCapacity()) {
+		for (Sac sac : listeSac) {
+			if (sac.getCapacityActuelle() <= sac.getCapacity()) {
 				newListeSac.add(sac);
 			}
 		}

@@ -10,11 +10,11 @@ public class Main {
 		Sac sac = fonction.charge_donnees("Instances_DKP/sdkp2_4.txt");
 		if (sac != null) {
 			sac.initTabChoice();
-			Date date = new Date();
-			System.out.println(date.getMinutes() + "m " + date.getSeconds() + "s");
-			sac = fonction.algoGenetique(sac, 8);
-			date = new Date();
-			System.out.println(date.getMinutes() + "m " + date.getSeconds() + "s");
+			Date dateDebut = new Date();
+			System.out.println(dateDebut.getMinutes() + "m " + dateDebut.getSeconds() + "s");
+			sac = fonction.algoGenetique(sac, 8, 2000000, true);
+			Date dateFin = new Date();
+			System.out.println(dateFin.getMinutes() + "m " + dateFin.getSeconds() + "s");
 			System.out.println("value = : " + sac.getValue());
 			System.out.println("capacity = : " + sac.getCapacityActuelle());
 			System.out.println("capacity free = : " + (sac.getCapacity() - sac.getCapacityActuelle()));
