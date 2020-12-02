@@ -3,7 +3,7 @@ package org.metaheurestique;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Sac {
+public class Sac implements Comparable<Sac> {
 
 	private int capacity;
 
@@ -12,8 +12,6 @@ public class Sac {
 	private int beastValue;
 
 	private int nombreItem;
-	
-	private int capacityActuel = 0;
 
 	private int capacityActuelle;
 
@@ -36,19 +34,16 @@ public class Sac {
 		this.setCapacityActuelle(0);
 	}
 
-	
-	
-	public int getCapacityActuel() {
-		return capacityActuel;
+	public Sac(Sac sac) {
+		setBeastValue(sac.getBeastValue());
+		setCapacity(sac.getCapacity());
+		setCapacityActuelle(sac.getCapacityActuelle());
+		setChoiceToTake(sac.getChoiceToTake());
+		setCout(sac.getCout());
+		setNombreItem(sac.getNombreItem());
+		setPoid(sac.getPoid());
+		setValue(sac.getValue());
 	}
-
-
-
-	public void setCapacityActuel(int capacityActuel) {
-		this.capacityActuel = capacityActuel;
-	}
-
-
 
 	public int getValue() {
 		return value;
@@ -122,8 +117,15 @@ public class Sac {
 	}
 
 	public void mutation() {
+		int randRes;
 		for (int i = 0; i < this.choice.size(); i++) {
-			this.choice.set(i, rand(-1, poid.get(i).getTaille()-1));
+			/**
+			 * -10 : 30% de chance de muté
+			 */
+			randRes = rand(-10, poid.get(i).getTaille());
+			if (randRes >= -1) {
+				this.choice.set(i, randRes);
+			}
 		}
 		updateValue();
 		updateCapacityActuelle();
@@ -167,17 +169,23 @@ public class Sac {
 
 	public Integer rand(int min, int max) {
 		Random rand = new Random();
-		int nombreAleatoire = rand.nextInt(max - min + 1) + min;
+		int nombreAleatoire = rand.nextInt(max - min) + min;
 		return nombreAleatoire;
 	}
-	
-	public void calculValue()
-	{
-		for(int i = 0;i<choice.size();i++ )
-		{
+
+	public void calculValue() {
+		for (int i = 0; i < choice.size(); i++) {
 			this.value = this.value + cout.get(i).getListDeTrois().get(choice.get(i));
-			capacityActuel = capacityActuel + poid.get(i).getListDeTrois().get(choice.get(i));
+			capacityActuelle = capacityActuelle + poid.get(i).getListDeTrois().get(choice.get(i));
 		}
+	}
+
+	@Override
+	public int compareTo(Sac o) {
+		/**
+		 * pour trier de manière décroissante
+		 */
+		return o.getValue() - this.value;
 	}
 
 }

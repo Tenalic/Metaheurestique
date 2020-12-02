@@ -3,6 +3,7 @@ package org.metaheurestique;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Fonction {
@@ -92,52 +93,68 @@ public class Fonction {
 		return sac;
 	}
 
-	public Sac algoGenetique(Sac sac) {
-		Sac sac1 = sac;
-		Sac sac2 = sac;
-		Sac sac3 = sac;
-		Sac sac4 = sac;
-		Sac beastSac = sac;
-		Sac beastSacTemp = sac;
+	public Sac algoGenetique(Sac sac, int nombreDeSac) {
+		if (nombreDeSac > 0) {
 
-		for (int i = 0; i < 50000; i++) {
-			sac1.mutation();
-			sac2.mutation();
-			sac3.mutation();
-			sac4.mutation();
-			beastSacTemp = beastSac(sac1, sac2, sac3, sac4);
-			if (beastSacTemp.getValue() > beastSac.getValue()) {
-				beastSac = beastSacTemp;
+			ArrayList<Sac> listeSacs = new ArrayList<Sac>();
+			ArrayList<Sac> listeEnfants = new ArrayList<Sac>();
+
+			int compt = 0;
+
+			for (int i = 0; i < nombreDeSac; i++) {
+				listeSacs.add(new Sac(sac));
 			}
-			sac1 = sac;
-			sac2 = sac;
-			sac3 = sac;
-			sac4 = sac;
-			beastSacTemp = sac;
-		}
-		return beastSac;
-	}
 
-	public Sac beastSac(Sac sac1, Sac sac2, Sac sac3, Sac sac4) {
-		if (sac1.getValue() > sac2.getValue() && sac1.getValue() > sac3.getValue()
-				&& sac1.getValue() > sac4.getValue()) {
-			return sac1;
+			Sac beastSac = sac;
+
+			for (int i = 0; i < 50000; i++) {
+
+				for (int j = 0; j < nombreDeSac; j++) {
+					listeSacs.get(j).mutation();
+				}
+
+				/**
+				 * tri par valeurs du sac decroissante
+				 */
+				Collections.sort(listeSacs);
+
+				if (isNewMeilleurSac(listeSacs.get(0), beastSac) == true) {
+					beastSac = listeSacs.get(0);
+				}
+
+				listeEnfants = crossover(listeSacs.get(0), listeSacs.get(1));
+
+				listeSacs = new ArrayList<Sac>();
+
+				for (int k = 0; k < listeEnfants.size(); k++) {
+					if (listeEnfants.get(k).getCapacity() >= listeEnfants.get(k).getCapacityActuelle()) {
+						listeSacs.add(listeEnfants.get(k));
+					}
+				}
+
+				compt = nombreDeSac - listeSacs.size();
+
+				for (int l = 0; l < compt; l++) {
+					listeSacs.add(beastSac);
+				}
+			}
+			return beastSac;
 		}
-		if (sac2.getValue() > sac3.getValue() && sac2.getValue() > sac4.getValue()
-				&& sac2.getValue() > sac1.getValue()) {
-			return sac2;
-		}
-		if (sac3.getValue() > sac4.getValue() && sac3.getValue() > sac1.getValue()
-				&& sac3.getValue() > sac2.getValue()) {
-			return sac3;
-		}
-		return sac4;
+		return sac;
 	}
 
 	public ArrayList<Sac> deuxBeastSacs(Sac sac1, Sac sac2, Sac sac3, Sac sac4, Sac sac5, Sac sac6, Sac sac7,
 			Sac sac8) {
 		ArrayList<Sac> listSac = new ArrayList<Sac>();
 		return listSac;
+	}
+
+	public boolean isNewMeilleurSac(Sac nouveau, Sac actuelle) {
+		if (nouveau.getValue() > actuelle.getValue() && nouveau.getCapacity() >= nouveau.getCapacityActuelle()) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public ArrayList<Sac> crossover(Sac sac1, Sac sac2) {
@@ -153,7 +170,7 @@ public class Fonction {
 		ArrayList<Sac> listSac = new ArrayList<Sac>();
 		listSac.add(newSac1);
 		listSac.add(newSac2);
-		return null;
+		return listSac;
 	}
 
 	public Sac algoGeneticTournois(Sac sac) {
