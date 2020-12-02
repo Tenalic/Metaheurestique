@@ -95,6 +95,8 @@ public class Fonction {
 
 	public Sac algoGenetique(Sac sac, int nombreDeSac) {
 		if (nombreDeSac > 0) {
+			
+			Sac sacVide;
 
 			ArrayList<Sac> listeSacs = new ArrayList<Sac>();
 			ArrayList<Sac> listeEnfants = new ArrayList<Sac>();
@@ -103,28 +105,38 @@ public class Fonction {
 
 			for (int i = 0; i < nombreDeSac; i++) {
 				listeSacs.add(new Sac(sac));
+				listeSacs.get(i).initTabChoiceRand();
 			}
 
 			Sac beastSac = sac;
+			Sac beastSacTemp;
 
-			for (int i = 0; i < 50000; i++) {
+			for (int i = 0; i < 100000; i++) {
 
 				for (int j = 0; j < nombreDeSac; j++) {
 					listeSacs.get(j).mutation();
 				}
+				
+				listeSacs = suprSollutionNonPossible(listeSacs);
 
 				/**
 				 * tri par valeurs du sac decroissante
 				 */
 				Collections.sort(listeSacs);
+				
+				beastSacTemp = newBeastSacTemp(listeSacs);
 
-				if (isNewMeilleurSac(listeSacs.get(0), beastSac) == true) {
-					beastSac = listeSacs.get(0);
+				if (beastSacTemp != null && isNewMeilleurSac(beastSacTemp, beastSac) == true) {
+					beastSac = beastSacTemp;
 				}
 
-				listeEnfants = crossover(listeSacs.get(0), listeSacs.get(1));
+				if(listeSacs.size() >= 2) {
+					listeEnfants = crossover(listeSacs.get(0), listeSacs.get(1));
+				}
 
 				listeSacs = new ArrayList<Sac>();
+				
+				listeSacs.add(beastSac);
 
 				for (int k = 0; k < listeEnfants.size(); k++) {
 					if (listeEnfants.get(k).getCapacity() >= listeEnfants.get(k).getCapacityActuelle()) {
@@ -135,7 +147,9 @@ public class Fonction {
 				compt = nombreDeSac - listeSacs.size();
 
 				for (int l = 0; l < compt; l++) {
-					listeSacs.add(beastSac);
+					sacVide = new Sac(sac);
+					sacVide.initTabChoiceRand();
+					listeSacs.add(sacVide);
 				}
 			}
 			return beastSac;
@@ -155,6 +169,25 @@ public class Fonction {
 		} else {
 			return false;
 		}
+	}
+
+	public Sac newBeastSacTemp(ArrayList<Sac> listeSacs) {
+		for (Sac sac : listeSacs) {
+			if (sac.getCapacityActuelle() <= sac.getCapacity()) {
+				return sac;
+			}
+		}
+		return null;
+	}
+	
+	public ArrayList<Sac> suprSollutionNonPossible(ArrayList<Sac> listeSac) {
+		ArrayList<Sac> newListeSac = new ArrayList<Sac>();
+		for(Sac sac : listeSac) {
+			if(sac.getCapacityActuelle() <= sac.getCapacity()) {
+				newListeSac.add(sac);
+			}
+		}
+		return newListeSac;
 	}
 
 	public ArrayList<Sac> crossover(Sac sac1, Sac sac2) {

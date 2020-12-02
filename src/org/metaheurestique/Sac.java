@@ -115,6 +115,13 @@ public class Sac implements Comparable<Sac> {
 			this.choice.add(-1);
 		}
 	}
+	
+	public void initTabChoiceRand() {
+		this.choice = new ArrayList<Integer>();
+		for (int i = 0; i < this.cout.size(); i++) {
+			this.choice.add(rand(0, poid.get(i).getTaille()));
+		}
+	}
 
 	public void mutation() {
 		int randRes;
