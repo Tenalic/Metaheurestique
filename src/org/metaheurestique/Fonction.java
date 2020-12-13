@@ -2,16 +2,80 @@ package org.metaheurestique;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 
 public class Fonction {
 
-	void sauvegarde_donnees(String name) {
-
+	/**
+	 * Sauvegarde le sac comme suit :
+	 * 
+	 * nb Groupes
+	 * capacite
+	 * value (de la solution)
+	 * le cout des objets
+	 * le poid des objets
+	 * la solution normalisé (1 si prend l'objet 0 sinon)
+	 * la solution brute (-1 rien 0 item 1, 1 item 2 et 2 item 3)
+	 *
+	 * /!\ Supprime le contenue de la sollution précédente si elle existé
+	 *
+	 * 
+	 * @param name : nom du fichier
+	 * @param sac : sac a sauvegarder
+	 */
+	void sauvegarde_donnees(String name, Sac sac) {
+		try {
+			new File(name + ".txt");
+			FileWriter writter = new FileWriter(name + ".txt");
+			writter.write(String.valueOf(sac.getNombreItem()) + "\n");
+			writter.write(String.valueOf(sac.getCapacity()) + "\n");
+			writter.write(String.valueOf(sac.getValue()) + "\n");
+			for (Groupe groupePrix : sac.getCout()) {
+				for (Integer cout : groupePrix.getListDeTrois()) {
+					writter.write(cout.toString() + " ");
+				}
+			}
+			writter.write("\n");
+			for (Groupe groupeValue : sac.getCout()) {
+				for (Integer value : groupeValue.getListDeTrois()) {
+					writter.write(value.toString() + " ");
+				}
+			}
+			writter.write("\n");
+			int value;
+			int compteur = 0;
+			for (int i = 0; i < sac.getChoiceToTake().size(); i++) {
+				value = sac.getChoiceToTake().get(i);
+				for (int j = 0; j < sac.getPoid().get(i).getTaille(); j++) {
+					if (compteur == value) {
+						writter.write("1 ");
+					} else {
+						writter.write("0 ");
+					}
+					compteur++;
+				}
+				compteur = 0;
+			}
+			writter.write("\n");
+			for (Integer value2 : sac.getChoiceToTake()) {
+				writter.write(value2.toString() + " ");
+			}
+			writter.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
+	/**
+	 * Charge les donnée d'un sac
+	 * 
+	 * @param name : nom du fichier
+	 * @return le sac chargé
+	 */
 	Sac charge_donnees(String name) {
 		Sac sac = new Sac();
 
@@ -93,6 +157,15 @@ public class Fonction {
 		return sac;
 	}
 
+	/**
+	 * Fonction de l'algo génétique
+	 * 
+	 * @param sac                : sac sur le quelle l'algo vas tavailler
+	 * @param nombreDeSac        : nombre de sac qui seront manimuler par l'algo a
+	 *                           chaque iteration
+	 * @param nombreIterationMax : nombre d'iteration
+	 * @return le sac contenant la solution
+	 */
 	public Sac algoGenetique(Sac sac, int nombreDeSac, int nombreIterationMax) {
 		if (nombreDeSac > 0) {
 
@@ -157,6 +230,18 @@ public class Fonction {
 		return sac;
 	}
 
+	/**
+	 * Fonction de l'algo génétique
+	 * 
+	 * @param sac                         : sac sur le quelle l'algo vas tavailler
+	 * @param nombreDeSac                 : nombre de sac qui seront manimuler par
+	 *                                    l'algo a chaque iteration
+	 * @param nombreIterationMax          : nombre d'iteration maximum
+	 * @param utiliserValeursMaxTheorique : utiliser la valeurs theorique maximum,
+	 *                                    permet a l'algo de s'arreter plus tot si
+	 *                                    il trouve la solution theorique
+	 * @return le sac contenant la solution
+	 */
 	public Sac algoGenetique(Sac sac, int nombreDeSac, int nombreIterationMax, boolean utiliserValeursMaxTheorique) {
 		if (nombreDeSac > 0) {
 
@@ -178,7 +263,8 @@ public class Fonction {
 			int i = 0;
 
 			while (i < nombreIterationMax
-					&& (utiliserValeursMaxTheorique == true && beastSac.getValue() < beastSac.getBeastValue())) {
+					&& (utiliserValeursMaxTheorique == false || (utiliserValeursMaxTheorique == true
+							&& beastSac.getBeastValue() != 0 && beastSac.getValue() < beastSac.getBeastValue()))) {
 
 				for (int j = 0; j < nombreDeSac; j++) {
 					listeSacs.get(j).mutation();
@@ -206,9 +292,10 @@ public class Fonction {
 				listeSacs.add(beastSac);
 
 				for (int k = 0; k < listeEnfants.size(); k++) {
-					if (listeEnfants.get(k).getCapacity() >= listeEnfants.get(k).getCapacityActuelle()) {
-						listeSacs.add(listeEnfants.get(k));
-					}
+					// if (listeEnfants.get(k).getCapacity() >=
+					// listeEnfants.get(k).getCapacityActuelle()) {
+					listeSacs.add(listeEnfants.get(k));
+					// }
 				}
 
 				compt = nombreDeSac - listeSacs.size();
@@ -218,7 +305,7 @@ public class Fonction {
 					sacVide.initTabChoiceRand();
 					listeSacs.add(sacVide);
 				}
-				
+
 				i++;
 			}
 			return beastSac;
@@ -259,6 +346,13 @@ public class Fonction {
 		return newListeSac;
 	}
 
+	/**
+	 * Fonction réalisant le croisement de 2 sacs
+	 * 
+	 * @param sac1
+	 * @param sac2
+	 * @return liste contenant les 2 enfants résultant du croisement
+	 */
 	public ArrayList<Sac> crossover(Sac sac1, Sac sac2) {
 		int taille = sac1.getChoiceToTake().size();
 		Sac newSac1 = sac1;
@@ -275,6 +369,7 @@ public class Fonction {
 		return listSac;
 	}
 
+	// non utilisé
 	public Sac algoGeneticTournois(Sac sac) {
 		Sac sac1 = sac;
 		ArrayList<Groupe> cout = sac1.getCout();
@@ -289,6 +384,7 @@ public class Fonction {
 		return sac1;
 	}
 
+	// non utilisé
 	public int meilleurDuGroupe(Groupe c, Groupe a) {
 		float max = 0;
 		int j = 0;

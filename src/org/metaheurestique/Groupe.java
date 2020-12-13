@@ -4,8 +4,14 @@ import java.util.ArrayList;
 
 public class Groupe {
 
+	/**
+	 * Liste de 3 entier
+	 */
 	private ArrayList<Integer> listDeTrois;
 
+	/**
+	 * Taille de la listeDeTrois
+	 */
 	private int taille;
 
 	Groupe() {
