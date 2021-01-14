@@ -289,14 +289,16 @@ public class Fonction {
 
 				listeSacs = new ArrayList<Sac>();
 
-				listeSacs.add(beastSac);
+				listeSacs.add(new Sac(beastSac));
+				
 
 				for (int k = 0; k < listeEnfants.size(); k++) {
 					// if (listeEnfants.get(k).getCapacity() >=
 					// listeEnfants.get(k).getCapacityActuelle()) {
-					listeSacs.add(listeEnfants.get(k));
+					listeSacs.add(new Sac(listeEnfants.get(k)));
 					// }
 				}
+				
 
 				compt = nombreDeSac - listeSacs.size();
 
@@ -305,6 +307,7 @@ public class Fonction {
 					sacVide.initTabChoiceRand();
 					listeSacs.add(sacVide);
 				}
+				
 
 				i++;
 			}

@@ -14,7 +14,7 @@ public class Main {
             	
             	/* Configuration */
         		String fichierName = "sdkp2_4.txt";
-        		int nbIteration = 10000;
+        		int nbIteration = 1000000;
 
         		Sac sac = fonction.charge_donnees("Instances_DKP/" + fichierName);
 
